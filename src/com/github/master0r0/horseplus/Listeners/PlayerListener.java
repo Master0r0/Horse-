@@ -1,5 +1,6 @@
 package com.github.master0r0.horseplus.Listeners;
 
+import com.github.master0r0.horseplus.PlayerHandling.PlayerRegistration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -14,7 +15,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
-
+        new PlayerRegistration(event.getPlayer());
     }
 
     @EventHandler
