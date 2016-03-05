@@ -33,7 +33,7 @@ public class CheckHorse {
 
             return dataSection.get(data);
         }else{
-            plugin.logger.info("This horse has not been registered in the system!");
+            //plugin.logger.info("This horse has not been registered in the system!");
         }
         return null;
     }

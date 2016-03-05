@@ -1,4 +1,9 @@
-name: "Horse Plus"
+name: "Horse_Plus"
 version: "0.1"
 author: "Master0r0"
 main: com.github.master0r0.horseplus.HorsePlus
+
+commands:
+  horse+:
+    description: Commands for managing your horses.
+    usage: /horse+ tp <horseID> | /horse+ list

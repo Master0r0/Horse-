@@ -1,5 +1,6 @@
 package com.github.master0r0.horseplus;
 
+import com.github.master0r0.horseplus.Commands.CommandHorsePlus;
 import com.github.master0r0.horseplus.Listeners.RegisterListeners;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginLogger;
@@ -15,11 +16,13 @@ public class HorsePlus extends JavaPlugin {
 
     public PluginLogger logger = new PluginLogger(this);
     public FileConfiguration config = this.getConfig();
+    public String pluginPrefix = "[Horse+] ";
 
     @Override
     public void onEnable(){
         new Config(config);
         new RegisterListeners();
+        this.getCommand("Horse+").setExecutor(new CommandHorsePlus());
     }
 
     @Override

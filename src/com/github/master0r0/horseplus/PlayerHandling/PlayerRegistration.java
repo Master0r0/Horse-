@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Licensed under the GNU Public License
@@ -46,6 +47,21 @@ public class PlayerRegistration {
                 exception.printStackTrace();
             }
         }
+    }
+
+    public static Map<String, Object> getHorses(Player player){
+        //Creates a directory for files to be stored in
+        File playerdataDir = new File(plugin.getDataFolder(),File.separator+"Player Data");
+        //Creates a File variable with the path of HorseDataDir(Where the config is found) and the Horses UUID with the .yml extension
+        File playerdata = new File(playerdataDir,File.separator+player.getName()+".yml");
+        //Generates a file configuration in the form of a yml file of File f
+        FileConfiguration playerData = YamlConfiguration.loadConfiguration(playerdata);
+
+        if(playerdata.exists()){
+            ConfigurationSection ownedHorses = playerData.getConfigurationSection("Owned Horses");
+            return ownedHorses.getValues(true);
+        }
+        return null;
     }
 
     public static void addHorse(Horse horse, Player player){
