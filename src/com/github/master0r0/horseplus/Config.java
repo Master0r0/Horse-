@@ -24,6 +24,7 @@ public class Config {
 
             //Horse Section
             horseSection.addDefault("Should Horses take damage", false);
+            horseSection.addDefault("Only owners and friends riders can ride Horses",true);
 
             config.options().copyDefaults(true);
             plugin.saveConfig();

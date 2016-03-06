@@ -54,6 +54,7 @@ public class HorseRegistration {
                 horseData.save(horsedata);
             }catch(IOException exception) {
                 exception.printStackTrace();
+                return false;
             }
             return true;
         }else{
