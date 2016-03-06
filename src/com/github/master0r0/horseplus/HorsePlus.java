@@ -22,7 +22,7 @@ public class HorsePlus extends JavaPlugin {
     public void onEnable(){
         new Config(config);
         new RegisterListeners();
-        this.getCommand("Horse+").setExecutor(new CommandHorsePlus());
+        this.getCommand("horsep").setExecutor(new CommandHorsePlus());
     }
 
     @Override

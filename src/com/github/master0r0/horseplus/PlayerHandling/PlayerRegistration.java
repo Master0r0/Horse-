@@ -49,11 +49,11 @@ public class PlayerRegistration {
         }
     }
 
-    public static Map<String, Object> getHorses(Player player){
+    public static Map<String, Object> getHorses(String player){
         //Creates a directory for files to be stored in
         File playerdataDir = new File(plugin.getDataFolder(),File.separator+"Player Data");
         //Creates a File variable with the path of HorseDataDir(Where the config is found) and the Horses UUID with the .yml extension
-        File playerdata = new File(playerdataDir,File.separator+player.getName()+".yml");
+        File playerdata = new File(playerdataDir,File.separator+player+".yml");
         //Generates a file configuration in the form of a yml file of File f
         FileConfiguration playerData = YamlConfiguration.loadConfiguration(playerdata);
 
@@ -82,7 +82,7 @@ public class PlayerRegistration {
                 playerInfo.set("UUID",String.valueOf(player.getUniqueId()));
 
                 //Owned horses
-                ownedHorses.set(String.valueOf(CheckHorse.getHorseData(horse,"Horse Info","PluginID")),String.valueOf(horse.getUniqueId()));
+                ownedHorses.set(String.valueOf(CheckHorse.getHorseData(String.valueOf(horse.getUniqueId()),"Horse Info","PluginID")),String.valueOf(horse.getUniqueId()));
 
                 //Attempts to save the data made above in File f
                 playerData.save(playerdata);
@@ -92,7 +92,7 @@ public class PlayerRegistration {
         }else{
             try{
                 ConfigurationSection ownedHorses = playerData.getConfigurationSection("Owned Horses");
-                ownedHorses.set(String.valueOf(CheckHorse.getHorseData(horse,"Horse Info","PluginID")),String.valueOf(horse.getUniqueId()));
+                ownedHorses.set(String.valueOf(CheckHorse.getHorseData(String.valueOf(horse.getUniqueId()),"Horse Info","PluginID")),String.valueOf(horse.getUniqueId()));
 
                 playerData.save(playerdata);
             }catch(IOException exception) {

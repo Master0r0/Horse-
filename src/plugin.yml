@@ -4,6 +4,6 @@ author: "Master0r0"
 main: com.github.master0r0.horseplus.HorsePlus
 
 commands:
-  horse+:
+  horsep:
     description: Commands for managing your horses.
-    usage: /horse+ tp <horseID> | /horse+ list
+    usage: /horsep tp <horseID> | /horsep list | /horsep disown <horseID>

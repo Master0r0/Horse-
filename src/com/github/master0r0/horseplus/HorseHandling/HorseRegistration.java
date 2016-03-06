@@ -1,6 +1,7 @@
 package com.github.master0r0.horseplus.HorseHandling;
 
 import com.github.master0r0.horseplus.HorsePlus;
+import com.github.master0r0.horseplus.PlayerHandling.PlayerRegistration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
@@ -38,7 +40,6 @@ public class HorseRegistration {
                 Map<String,Player> riders = new HashMap<String, Player>();
                 ConfigurationSection horseInfo = horseData.createSection("Horse Info");
                 ConfigurationSection ownerInfo = horseData.createSection("Owner Info");
-                Random randomID;
 
                 //Horse Info data
                 horseInfo.set("UUID",HorseUUID);
@@ -66,7 +67,7 @@ public class HorseRegistration {
 
         int randomID = min + (int)(Math.random()*(max-min)+1);
 
-        if(getHorseFromID(randomID)==null) {
+        if(getHorseUUIDFromID(String.valueOf(randomID))==null||getHorseUUIDFromID(String.valueOf(randomID)).equalsIgnoreCase("")) {
             storeHorseID(horse,randomID);
             return randomID;
         }
@@ -105,6 +106,80 @@ public class HorseRegistration {
 
     }
 
+    public static void unregisterHorse(String HorseUUID, String OwnerName){
+        //Creates a directory for files to be stored in
+        File horsedataDir = new File(plugin.getDataFolder(),File.separator+"Horse Data");
+        //Creates a File variable with the path of HorseDataDir(Where the config is found) and the Horses UUID with the .yml extension
+        File horsedata = new File(horsedataDir,File.separator+HorseUUID+".yml");
+        FileConfiguration horseData = YamlConfiguration.loadConfiguration(horsedata);
+
+        File horseiddata = new File(horsedataDir,File.separator+"HorseIDs.yml");
+        FileConfiguration horseIDData = YamlConfiguration.loadConfiguration(horseiddata);
+
+        File playerDataDir = new File(plugin.getDataFolder(),File.separator+"Player Data");
+        File playerdata = new File(playerDataDir,File.separator+OwnerName+".yml");
+        FileConfiguration playerData = YamlConfiguration.loadConfiguration(playerdata);
+        FileConfiguration newPlayerData = YamlConfiguration.loadConfiguration(playerdata);
+
+        ConfigurationSection horseID = horseData.getConfigurationSection("Horse Info");
+
+        if(horseiddata.exists()){
+            try{
+                ConfigurationSection horseIDList = horseIDData.getConfigurationSection("Horse ID's");
+                horseIDList.set(horseID.getString("PluginID"),"");
+                horseIDData.save(horseiddata);
+            }catch(IOException exception){
+                exception.printStackTrace();
+            }
+        }
+
+        if(playerdata.exists()){
+            try {
+                ConfigurationSection ownedHorses = playerData.getConfigurationSection("Owned Horses");
+                ownedHorses.set(horseID.getString("PluginID"), "");
+
+                playerData.save(playerdata);
+            }catch(IOException exception){
+                exception.printStackTrace();
+            }
+        }
+
+        if(playerdata.exists()){
+            try{
+                ConfigurationSection playerInfo = playerData.getConfigurationSection("Player Info");
+
+                ConfigurationSection newPlayerInfo = newPlayerData.createSection("Player Info");
+                ConfigurationSection newOwnedHorses = newPlayerData.createSection("Owned Horses");
+
+                Map<String,Object> horses = PlayerRegistration.getHorses(OwnerName);
+                if (horses != null) {
+                    Iterator it = horses.entrySet().iterator();
+                    while (it.hasNext()) {
+                        Map.Entry pair = (Map.Entry) it.next();
+                        if(!(String.valueOf(horses.get(pair.getKey())).equalsIgnoreCase("")))
+                            newOwnedHorses.set(String.valueOf(pair.getKey()),horses.get(pair.getKey()));
+                        it.remove();
+                    }
+                }
+
+                Map<String,Object> oldPlayerData = playerInfo.getValues(true);
+                Iterator it = oldPlayerData.entrySet().iterator();
+                while(it.hasNext()){
+                    Map.Entry pair = (Map.Entry) it.next();
+                    newPlayerInfo.set(String.valueOf(pair.getKey()),oldPlayerData.get(pair.getKey()));
+                }
+
+                newPlayerData.save(playerdata);
+            }catch(IOException exception){
+                exception.printStackTrace();
+            }
+        }
+
+        if(horsedata.exists()) {
+            horsedata.delete();
+        }
+    }
+
     public static int getHorseID(Horse horse){
         String HorseUUID = String.valueOf(horse.getUniqueId());
 
@@ -124,7 +199,7 @@ public class HorseRegistration {
         return 0;
     }
 
-    public static String getHorseFromID(int ID){
+    public static String getHorseUUIDFromID(String ID){
         //String HorseUUID = String.valueOf(horse.getUniqueId());
 
         //Creates a directory for files to be stored in
@@ -136,7 +211,7 @@ public class HorseRegistration {
 
         if(horsedata.exists()){
             ConfigurationSection horseID = horseData.getConfigurationSection("Horse ID's");
-            return (String) horseID.get(String.valueOf(ID));
+            return horseID.getString(ID);
         }else{
             plugin.logger.info("Horse ID File was not found!");
         }

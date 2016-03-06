@@ -18,8 +18,7 @@ public class CheckHorse {
 
     private static HorsePlus plugin = HorsePlus.getPlugin(HorsePlus.class);
 
-    public static Object getHorseData(Horse horse, String section, String data){
-        String HorseUUID = String.valueOf(horse.getUniqueId());
+    public static Object getHorseData(String HorseUUID, String section, String data){
 
         //Creates a directory for files to be stored in
         File horsedataDir = new File(plugin.getDataFolder(),File.separator+"Horse Data");
