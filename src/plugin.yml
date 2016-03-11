@@ -1,4 +1,4 @@
-name: "Horse_Plus"
+name: "HorsePlus"
 version: "0.1"
 author: "Master0r0"
 main: com.github.master0r0.horseplus.HorsePlus
@@ -6,4 +6,4 @@ main: com.github.master0r0.horseplus.HorsePlus
 commands:
   horsep:
     description: Commands for managing your horses.
-    usage: /horsep tp <horseID> | /horsep list | /horsep disown <horseID>
+    usage: /horsep tp <horseID> | /horsep list | /horsep disown <horseID> | /horsep gift <horseID> <player>
