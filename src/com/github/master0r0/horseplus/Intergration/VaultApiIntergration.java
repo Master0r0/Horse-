@@ -3,7 +3,7 @@ package com.github.master0r0.horseplus.Intergration;
 import com.github.master0r0.horseplus.HorsePlus;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.permissions.Permission;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
@@ -31,12 +31,14 @@ public class VaultApiIntergration {
         setupPermissions();
     }
 
-    private void setupEconomy(){
+    private boolean setupEconomy(){
         RegisteredServiceProvider<Economy> rsp = plugin.getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
-            plugin.logger.severe("Could not find Economy Service Provider, there may be a bug in Vault plugin");
+            plugin.logger.severe("Could not find an Economy Provider");
+        }else {
+            econ = rsp.getProvider();
         }
-        econ = rsp.getProvider();
+        return econ != null;
     }
 
     private boolean setupChat(){

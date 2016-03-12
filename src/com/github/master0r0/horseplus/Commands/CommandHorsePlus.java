@@ -38,18 +38,23 @@ public class CommandHorsePlus implements CommandExecutor {
                     if (player.isOp()||player.hasPermission(new Permission("horseplus.tp"))) {
                         if(strings[1]!=null) {
                             Horse horseEntity = CheckHorse.findHorseEntity(player,strings[1]);
-                            if(String.valueOf(CheckHorse.getHorseData(String.valueOf(horseEntity.getUniqueId()), "Owner Info", "Name")).equalsIgnoreCase(player.getDisplayName())) {
-                                Location playerLoc = new Location(player.getWorld(), player.getLocation().getX(), (player.getLocation().getY() + 2), player.getLocation().getZ());
-                                if (!horseEntity.teleport(playerLoc)) {
-                                    player.sendMessage(String.format("%sCould not teleport horse",plugin.pluginPrefix));
-                                    return true;
+                            if(horseEntity!=null) {
+                                if (String.valueOf(CheckHorse.getHorseData(String.valueOf(horseEntity.getUniqueId()), "Owner Info", "Name")).equalsIgnoreCase(player.getDisplayName())) {
+                                    Location playerLoc = new Location(player.getWorld(), player.getLocation().getX(), (player.getLocation().getY() + 2), player.getLocation().getZ());
+                                    if (!horseEntity.teleport(playerLoc)) {
+                                        player.sendMessage(String.format("%sCould not teleport horse", plugin.pluginPrefix));
+                                        return true;
+                                    } else {
+                                        return true;
+                                    }
                                 } else {
+                                    //%s is a string format code in which each is replaced by the variables in order placed after the ,
+                                    //The %s is replaced with the data in the variable plugin.pluginPrefix
+                                    player.sendMessage(String.format("%sYou do not own this horse!", plugin.pluginPrefix));
                                     return true;
                                 }
-                            }else {
-                                //%s is a string format code in which each is replaced by the variables in order placed after the ,
-                                //The %s is replaced with the data in the variable plugin.pluginPrefix
-                                player.sendMessage(String.format("%sYou do not own this horse!",plugin.pluginPrefix));
+                            }else{
+                                player.sendMessage(String.format("%sA horse with that ID does not exist or is not loaded",plugin.pluginPrefix));
                                 return true;
                             }
                         }else{
