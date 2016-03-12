@@ -1,13 +1,17 @@
 package com.github.master0r0.horseplus.HorseHandling;
 
 import com.github.master0r0.horseplus.HorsePlus;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Horse;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Licensed under the GNU Public License
@@ -33,6 +37,18 @@ public class CheckHorse {
             return dataSection.get(data);
         }else{
             //plugin.logger.info("This horse has not been registered in the system!");
+        }
+        return null;
+    }
+
+    public static Horse findHorseEntity(Player player, String HorseID){
+        List<Entity> entities = plugin.getServer().getWorld(player.getWorld().getName()).getEntities();
+        for (Entity horseEntity : entities) {
+            if (horseEntity instanceof Horse) {
+                if (String.valueOf(CheckHorse.getHorseData(String.valueOf(horseEntity.getUniqueId()), "Horse Info", "PluginID")).equalsIgnoreCase(HorseID)) {
+                    return (Horse) horseEntity;
+                }
+            }
         }
         return null;
     }
